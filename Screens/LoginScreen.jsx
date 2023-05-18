@@ -1,14 +1,27 @@
 import { useState, useEffect } from 'react';
 import { ImageBackground, StyleSheet, Text, TextInput, View, Image, TouchableOpacity, Platform, Keyboard, KeyboardAvoidingView, TouchableWithoutFeedback } from 'react-native';
 
-export default function LoginScreen() {
+const initialState = {
+  email: '',
+  password: '',
+};
 
+export default function LoginScreen() { 
+
+  const [state, setState] = useState(initialState)
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const [isPasswordVisible, setIsPasswordisible] = useState(false);
   const [isFocusedInput, setIsFocusedInput] = useState({
     email: false,
     password: false,
   });
+
+  // handle form submit
+  const handleSubmit = () => {
+    console.log(state);
+    setState(initialState);
+  }
+
 
   // handlers to change isFocused on textInput
   const handleInputFocus = textInput => {
@@ -61,6 +74,10 @@ export default function LoginScreen() {
                   placeholder='Email address' 
                   onFocus={() => {setIsKeyboardVisible(true), handleInputFocus('email')}}
                   onBlur={() => handleInputBlur('email')}
+                  value={state.email}
+                  onChangeText={(value) =>
+                    setState((prevState) => ({ ...prevState, email: value }))
+                  }
                   />
                 <View style={styles.passwordField}>
                   <TextInput 
@@ -72,13 +89,17 @@ export default function LoginScreen() {
                     secureTextEntry = {!isPasswordVisible}
                     onFocus={() => {setIsKeyboardVisible(true), handleInputFocus('password')}}
                     onBlur={() => handleInputBlur('password')}
+                    value={state.password}
+                    onChangeText={(value) =>
+                    setState((prevState) => ({ ...prevState, password: value }))
+                  }
                   />
                   {isPasswordVisible ? (
                     <Text style={styles.passwordVisibility} onPress={() => setIsPasswordisible(prev => !prev)}>Hide</Text>
                       ) : (<Text style={styles.passwordVisibility} onPress={() => setIsPasswordisible(prev => !prev)}>Show</Text>
                   )}
                 </View> 
-                <TouchableOpacity activeOpacity={0.8} style={styles.btn}>
+                <TouchableOpacity activeOpacity={0.8} style={styles.btn} onPress={handleSubmit}>
                   <Text style={styles.btnText}>Sign in</Text>
                 </TouchableOpacity>
               </View>

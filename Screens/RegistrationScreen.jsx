@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { ImageBackground, StyleSheet, Text, TextInput, View, Image, TouchableOpacity, Platform, Keyboard, KeyboardAvoidingView, TouchableWithoutFeedback } from 'react-native';
+import { ImageBackground, StyleSheet, Text, TextInput, View, TouchableOpacity, Platform, Keyboard, KeyboardAvoidingView, TouchableWithoutFeedback } from 'react-native';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 const initialState = {
   login: '',
@@ -66,7 +67,10 @@ export default function RegisterScreen() {
           <KeyboardAvoidingView behavior={Platform.OS === 'ios' && 'padding'}>
             <View style={{...styles.signWindow, marginBottom: isKeyboardVisible ? -164 : 0}}>
               <View style={styles.avatar}>
-                <Image source={require("../assets/images/avatar.png")}></Image>
+                {/* <Image source={require("../assets/images/avatar.png")}></Image> */}
+                <TouchableOpacity style={styles.btnUpload}>
+                  <Icon name="plus" size={20} color="#FF6C00" />
+                </TouchableOpacity>
               </View>
               <Text style={styles.title}>Sign Up</Text>
               <View style={styles.form}>
@@ -148,8 +152,26 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 25,  
   },
   avatar: {
+    position: 'relative',
+    width: 120,
+    height: 120,
+    backgroundColor: '#F6F6F6',
+    borderRadius: 16,
     alignSelf: 'center',
     marginTop: -60,
+  },
+  btnUpload: {
+    position: 'absolute',
+    bottom: 14,
+    right: -12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 25,
+    height: 25,
+    backgroundColor: '#FFF',
+    borderRadius: 25,
+    borderWidth: 1,
+    borderColor: '#FF6C00', 
   },
   title: {
     textAlign: 'center',
