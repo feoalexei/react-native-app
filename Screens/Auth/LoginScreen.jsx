@@ -1,12 +1,17 @@
 import { useState, useEffect } from 'react';
 import { ImageBackground, StyleSheet, Text, TextInput, View, Image, TouchableOpacity, Platform, Keyboard, KeyboardAvoidingView, TouchableWithoutFeedback } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import BackgroundImage from '../../Components/BackgroundImage';
+import Btn from '../../Components/Button';
 
 const initialState = {
   email: '',
   password: '',
 };
 
-export default function LoginScreen() { 
+const LoginScreen = () => { 
+
+  const navigation = useNavigation();
 
   const [state, setState] = useState(initialState)
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
@@ -20,8 +25,8 @@ export default function LoginScreen() {
   const handleSubmit = () => {
     console.log(state);
     setState(initialState);
+    navigation.navigate("Home");
   }
-
 
   // handlers to change isFocused on textInput
   const handleInputFocus = textInput => {
@@ -61,9 +66,10 @@ export default function LoginScreen() {
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={hideKeyboard}>
-        <ImageBackground source={require("../assets/images/bg.png")} style={styles.imageBg}>
+      <ImageBackground source={require('../../assets/images/bg.png')} style={styles.imageBg}>     
           <KeyboardAvoidingView behavior={Platform.OS === 'ios' && 'padding'}>
-            <View style={{...styles.signWindow, marginBottom: isKeyboardVisible ? -230 : 0}}>
+            <View style={styles.signWindow}>
+            {/* <View style={{...styles.signWindow, marginBottom: isKeyboardVisible ? -230 : 0}}> */}
               <Text style={styles.title}>Sign In</Text>
               <View style={styles.form}>
                 <TextInput 
@@ -99,14 +105,16 @@ export default function LoginScreen() {
                       ) : (<Text style={styles.passwordVisibility} onPress={() => setIsPasswordisible(prev => !prev)}>Show</Text>
                   )}
                 </View> 
-                <TouchableOpacity activeOpacity={0.8} style={styles.btn} onPress={handleSubmit}>
-                  <Text style={styles.btnText}>Sign in</Text>
-                </TouchableOpacity>
+                <Btn title='Sign In' onPress={handleSubmit}/>
               </View>
-              <Text style={styles.alternateSignIn}>Don't have an account? Sign Up</Text>
+              <TouchableOpacity 
+                activeOpacity={0.6}
+                onPress={() => navigation.navigate("Registration")}>
+                    <Text style={styles.navLink}>Don't have an account? Sign Up</Text>
+              </TouchableOpacity>
             </View> 
-          </KeyboardAvoidingView>
-        </ImageBackground>
+          </KeyboardAvoidingView>   
+        </ImageBackground>        
       </TouchableWithoutFeedback>
     </View>
   );
@@ -165,21 +173,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Roboto-Regular',
   },
-  btn: {
-    height: 51,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#FF6C00',
-    borderRadius: 100,
-    marginTop: 27,
-  },
-  btnText: {
-    color: '#fff',
-    fontSize: 16,
-    fontFamily: 'Roboto-Regular',
-  },
-  alternateSignIn: {
+  navLink: {
     textAlign: 'center',
+    color: '#1B4371',
+    fontSize: 16,
     fontFamily: 'Roboto-Regular',
   }
 });
+
+export default LoginScreen;

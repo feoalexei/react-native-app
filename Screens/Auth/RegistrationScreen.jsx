@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { ImageBackground, StyleSheet, Text, TextInput, View, TouchableOpacity, Platform, Keyboard, KeyboardAvoidingView, TouchableWithoutFeedback } from 'react-native';
-import Icon from 'react-native-vector-icons/AntDesign';
+import { useNavigation } from '@react-navigation/native';
+import AntDesignIcon from 'react-native-vector-icons/AntDesign';
+import Btn from '../../Components/Button';
 
 const initialState = {
   login: '',
@@ -8,7 +10,8 @@ const initialState = {
   password: '',
 };
 
-export default function RegisterScreen() {
+const RegisterScreen = () => {
+  const navigation = useNavigation();
 
   const [state, setState] = useState(initialState);
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
@@ -63,13 +66,14 @@ export default function RegisterScreen() {
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={hideKeyboard}>
-        <ImageBackground source={require("../assets/images/bg.png")} style={styles.imageBg}>
+        <ImageBackground source={require('../../assets/images/bg.png')} style={styles.imageBg}>
           <KeyboardAvoidingView behavior={Platform.OS === 'ios' && 'padding'}>
-            <View style={{...styles.signWindow, marginBottom: isKeyboardVisible ? -164 : 0}}>
+            {/* <View style={{...styles.signWindow, marginBottom: isKeyboardVisible ? -164 : 0}}> */}
+            <View style={{...styles.signWindow}}>
               <View style={styles.avatar}>
                 {/* <Image source={require("../assets/images/avatar.png")}></Image> */}
                 <TouchableOpacity style={styles.btnUpload}>
-                  <Icon name="plus" size={20} color="#FF6C00" />
+                  <AntDesignIcon name="plus" size={20} color="#FF6C00" />
                 </TouchableOpacity>
               </View>
               <Text style={styles.title}>Sign Up</Text>
@@ -120,11 +124,13 @@ export default function RegisterScreen() {
                       ) : (<Text style={styles.passwordVisibility} onPress={() => setIsPasswordisible(prev => !prev)}>Show</Text>
                   )}
                 </View> 
-                <TouchableOpacity activeOpacity={0.8} style={styles.btn} onPress={handleSubmit}>
-                  <Text style={styles.btnText}>Register</Text>
-                </TouchableOpacity>
+                <Btn title="Register" onPress={handleSubmit}/>
               </View>
-              <Text style={styles.alternateSignIn}>Already have an account? Sign In</Text>
+              <TouchableOpacity
+                activeOpacity={0.6} 
+                onPress={() => navigation.navigate("Login")}>
+                    <Text style={styles.navLink}>Already have an account? Sign In</Text>
+              </TouchableOpacity>
             </View> 
           </KeyboardAvoidingView>
         </ImageBackground>
@@ -208,21 +214,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Roboto-Regular',
   },
-  btn: {
-    height: 51,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#FF6C00',
-    borderRadius: 100,
-    marginTop: 27,
-  },
-  btnText: {
-    color: '#fff',
-    fontSize: 16,
-    fontFamily: 'Roboto-Regular',
-  },
   alternateSignIn: {
     textAlign: 'center',
     fontFamily: 'Roboto-Regular',
+  },
+  navLink: {
+    textAlign: 'center',
+    color: '#1B4371',
+    fontSize: 16,
+    fontFamily: 'Roboto-Regular',
   }
 });
+
+export default RegisterScreen;
