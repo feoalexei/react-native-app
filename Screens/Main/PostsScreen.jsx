@@ -1,62 +1,46 @@
 import React from "react";
-import { View, SafeAreaView, ScrollView, Text, StyleSheet, Image } from "react-native";
-import Post from "../../Components/Post";
+import { View, SafeAreaView, Text, StyleSheet, TouchableOpacity, Image, FlatList } from "react-native";
+import { createStackNavigator } from "@react-navigation/stack";
+import DefaultPostsScreen from "../NestedScreens/DefaultPostsScreen";
+import CommentsScreen from "../NestedScreens/CommentsScreen";
+import MapScreen from "../NestedScreens/MapScreen";
+
+// icons import
+import { MaterialIcons } from '@expo/vector-icons'; 
+
+const NestedScreen = createStackNavigator();
 
 const PostsScreen = () => {
+
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView}>
-        <View style={styles.authorInfo}>
-          <Image style={styles.avatar} source={require("../../assets/images/avatar.png")}/>
-          <View>
-            <Text style={styles.name}>Natalia Romanova</Text>
-            <Text style={styles.email}>email@example.com</Text>
-          </View>
-        </View>
-        <View style={styles.posts}> 
-          <Post/>
-          <Post/>
-          <Post/>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <NestedScreen.Navigator 
+      screenOptions={() => ({
+        headerTitleAlign: 'center',
+        headerTintColor: '#212121',
+        headerStyle: styles.headerBar,
+    })}>
+      <NestedScreen.Screen 
+        name='DefaultScreen' 
+        component={DefaultPostsScreen} 
+        options={{
+          title: 'Posts',
+          headerRight: () => (
+            <TouchableOpacity style={{marginRight: 16}}>
+                <MaterialIcons name="logout" size={24} color="#BDBDBD"  onPress={() => alert('This is a logout btn')}/>
+            </TouchableOpacity>
+          ),
+        }} />
+      <NestedScreen.Screen name='Comments' component={CommentsScreen} options={{tabBarStyle: { display: "none"}}} />
+      <NestedScreen.Screen name='Map' component={MapScreen}/>
+    </NestedScreen.Navigator>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    backgroundColor: '#fff',
-    paddingHorizontal: 16,
-    paddingTop: 32,
+  headerBar: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#BDBDBD',
   },
-  scrollView: {
-    width: '100%',
-  },
-  authorInfo: {
-    alignSelf: 'flex-start',
-    flexDirection: 'row',
-    gap: 8,
-    alignItems: 'center',
-    marginBottom: 32,
-  },
-  avatar: {
-    width: 60,
-    height: 60,
-    borderRadius: 16,
-  },
-  name : {
-    fontWeight: 700,
-    fontSize: 13, 
-  },
-  email : {
-    fontSize: 11, 
-  },
-  posts: {
-    width: '100%',
-    gap: 32,
-  },
-}); 
+});
 
 export default PostsScreen;

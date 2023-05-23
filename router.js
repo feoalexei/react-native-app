@@ -12,7 +12,6 @@ import LoginScreen from './Screens/Auth/LoginScreen';
 import PostsScreen from './Screens/Main/PostsScreen';
 import CreatePostsScreen from './Screens/Main/CreatePostsScreen';
 import ProfileScreen from './Screens/Main/ProfileScreen';
-import Home from './Screens/Home';
 
 // icons import
 import { Feather } from '@expo/vector-icons'; 
@@ -25,7 +24,6 @@ export const useRoute = (isAuth) => {
         <AuthStack.Navigator initialRouteName="Login">
           <AuthStack.Screen name="Registration" component={RegisterScreen} options={{ headerShown: false }}/>
           <AuthStack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }}/>
-          <AuthStack.Screen name="Home" component={PostsScreen} options={{ headerShown: false }}/>
         </AuthStack.Navigator>
       );
     }
@@ -51,7 +49,7 @@ export const useRoute = (isAuth) => {
             name="Posts" 
             component={PostsScreen}
             options={{
-              title: 'My Posts',
+              headerShown: false,
               headerRight: () => (
                 <TouchableOpacity style={{marginRight: 16}}>
                     <MaterialIcons name="logout" size={24} color="#BDBDBD"  onPress={() => alert('This is a logout btn')}/>
@@ -66,6 +64,7 @@ export const useRoute = (isAuth) => {
                 title: 'Create a post',
             }}
           />
+          
           <MainTab.Screen 
             name="Profile" 
             component={ProfileScreen}
