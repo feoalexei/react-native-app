@@ -3,6 +3,9 @@ import { ImageBackground, StyleSheet, Text, TextInput, View, TouchableOpacity, P
 import { useNavigation } from '@react-navigation/native';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import Btn from '../../Components/Button';
+import { useDispatch } from 'react-redux';
+
+import { authSignUp } from "../../redux/auth/authOperations";
 
 const initialState = {
   login: '',
@@ -22,9 +25,11 @@ const RegisterScreen = () => {
     password: false,
   });
 
+  const dispatch = useDispatch();
+
   // handle form submit
   const handleSubmit = () => {
-    console.log(state);
+    dispatch(authSignUp(state))
     setState(initialState);
   }
 
@@ -71,7 +76,6 @@ const RegisterScreen = () => {
             {/* <View style={{...styles.signWindow, marginBottom: isKeyboardVisible ? -164 : 0}}> */}
             <View style={{...styles.signWindow}}>
               <View style={styles.avatar}>
-                {/* <Image source={require("../assets/images/avatar.png")}></Image> */}
                 <TouchableOpacity style={styles.btnUpload}>
                   <AntDesignIcon name="plus" size={20} color="#FF6C00" />
                 </TouchableOpacity>

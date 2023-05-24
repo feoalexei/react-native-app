@@ -1,12 +1,21 @@
 import 'react-native-gesture-handler';
-import React from "react";
+import React, {useState} from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from 'expo-font';
 import { useRoute } from './router';
+import { Provider } from 'react-redux';
+import { store } from "./redux/store";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from './firebase/config';
 
 export default function App() {
-
-  const routing = useRoute(true)
+  const [user, setUser] = useState(null)
+  
+  onAuthStateChanged(auth, (user) => {
+    setUser(user)
+  });
+  
+  const routing = useRoute(user)
 
 // Check whether fonts has been loaded
   const [fontsLoaded] = useFonts({
@@ -19,9 +28,12 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      {routing}
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        {routing}
+      </NavigationContainer>
+    </Provider>
+
   );
 }
 

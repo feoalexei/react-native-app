@@ -1,7 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+
 import { ImageBackground, StyleSheet, Text, TextInput, View, Image, TouchableOpacity, Platform, Keyboard, KeyboardAvoidingView, TouchableWithoutFeedback } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import BackgroundImage from '../../Components/BackgroundImage';
+
+import { authSignIn } from "../../redux/auth/authOperations";
+
 import Btn from '../../Components/Button';
 
 const initialState = {
@@ -21,11 +25,13 @@ const LoginScreen = () => {
     password: false,
   });
 
+  const dispatch = useDispatch();
+
   // handle form submit
   const handleSubmit = () => {
-    console.log(state);
+    dispatch(authSignIn(state))
     setState(initialState);
-    navigation.navigate("Home");
+    // navigation.navigate("DefaultScreen");
   }
 
   // handlers to change isFocused on textInput
